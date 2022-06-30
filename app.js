@@ -40,7 +40,7 @@ function createSession(ssId){
         {
         multidevice: true,
         folderNameToken: 'tokens',
-        headless: false,
+        headless: true,
         devtools: false,
         useChrome: false,
         debug: false,
@@ -60,10 +60,11 @@ function createSession(ssId){
         }
     ).then((client)=>{ 
         client.onStateChange(state => {
+            clients = clients.filter(x=>x.id != ssId);
+            clients.push({id: ssId, waclient: client}); 
             console.log('State changed: ', state);
             if(state == 'CONNECTED'){
-                clients = clients.filter(x=>x.id != ssId);
-                clients.push({id: ssId, waclient: client});  
+                
             }
             // force whatsapp take over
             if ('CONFLICT'.includes(state)) client.useHere();
@@ -91,7 +92,7 @@ app.post('/send-message', async (req, res)=>{
 
         var result = await sendMessage(req.body);
         if(result.status == null){
-            return res.status(422).json({status: null, message: 'something went wrong'}); 
+            return res.status(422).json(result); 
         }else{
             return res.status(200).json(result);
         }

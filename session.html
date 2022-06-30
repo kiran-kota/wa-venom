@@ -36,11 +36,11 @@
                 $('#qrcode-' + data.id).show();
 			});
 
-			socket.on('ready', function(data) {
+			socket.on('qrReadSuccess', function(data) {
                 $('#qrcode-' + data.id).hide();
 			});
 
-			socket.on('authenticated', function(data) {
+			socket.on('CONNECTED', function(data) {
                 $('#qrcode-' + data.id).hide();
 			});
 		});
