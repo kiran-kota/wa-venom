@@ -59,9 +59,11 @@ function createSession(ssId){
             waPage.screenshot({ path: 'screenshot.png' });
         }
     ).then((client)=>{ 
+        clients = clients.filter(x=>x.id != ssId);
+        clients.push({id: ssId, waclient: client}); 
+        console.log(clients.length, 'clients connected');
         client.onStateChange(state => {
-            clients = clients.filter(x=>x.id != ssId);
-            clients.push({id: ssId, waclient: client}); 
+            
             console.log('State changed: ', state);
             if(state == 'CONNECTED'){
                 
